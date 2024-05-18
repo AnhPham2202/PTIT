@@ -1,0 +1,1027 @@
+Câu 1: Ma tran chuyen vi
+#include<stdio.h>
+//
+int nhapSoNguyenDuong(char name,int min,int max){
+	int num;
+	do {
+		printf("Nhap so nguyen duong %c (%d<%c<%d):",name,min,name,max);
+		scanf("%d",&num);
+	}
+	while(num<=min||num>=max);
+	return num;
+}
+//
+void NhapMang(int M, int N, int A[M][N]){
+	printf("\n Nhap mang A(%dx%d)",M,N);
+		int i;
+		for( i=1;i<=M;i++){
+			int j;
+		  for(j=1;j<=N;j++){
+		  	printf("\n A[%d][%d]:",i,j);
+		  	scanf("%d",&A[i][j]);
+		  }
+		}
+}
+//
+void matranChuyenVi(int M,int N,int A[M][N],int B[N][M]){
+	int i;
+	for(i=1;i<=M;i++){
+		int j;
+	   for(j=1;j<=N;j++){
+	   	B[i][j]=A[j][i];
+	   }
+	}
+}
+//
+void inMatranChuyenVi(int M,int N,int B[N][M]){
+	printf("\nMa tran chuyen vi B(%dx%d):\n ",N,M);
+	int i;
+	for(i=1;i<=N;i++){
+		int j;
+		for(j=1;j<=M;j++){
+			printf(“%d\t”,B[i][j]);
+		}
+		printf("\n");
+	}
+}
+int main(){
+	int M,N;
+	M=nhapSoNguyenDuong('M',2,10);
+	N=nhapSoNguyenDuong('N',2,10);
+	int A[M][N],B[N][M];
+	NhapMang(M,N,A);
+	matranChuyenVi(M,N,A,B);
+	inMatranChuyenVi(M,N,B);
+	
+	
+	return 0;
+}
+Câu 2: Tìm số hàng nhiều số nguyên tố nhất trong ma trận, có bao nhiêu chữ số nguyên tố trong ma trận, in ra ma trận vừa nhập !
+#include <stdio.h>
+#include <stdbool.h>
+#include<math.h>
+
+bool laSoNguyenTo(int num) {
+    if (num < 2) {
+        return false;
+    }
+    int i;
+    for ( i = 2; i <= sqrt(num); ++i) {
+        if (num % i == 0) {
+            return false;
+        }
+    }
+    return true;
+}
+
+
+void nhapMaTran(int n, int A[n][n]) {
+    printf("Nhap ma tran vuong cap %d:\n", n);
+    int i;
+    for ( i = 1; i <= n; ++i) {
+    	int j;
+        for (j = 1; j <= n; ++j) {
+        	do{
+        		printf("Nhap gia tri cua phan tu nho hon 1000 !\n");
+        		printf("A[%d][%d]: ", i, j);
+                 scanf("%d", &A[i][j]);	
+			}while(A[i][j]<1||A[i][j]>1000);
+            
+        }
+    }
+}
+void inMaTran(int n,int A[n][n]){
+	printf("Na tran A vua nhap la:\n");
+	int  i;
+	for(i=1;i<=n;i++){
+		int j;
+		for(j=1;j<=n;j++){
+		   printf("%d\t",A[i][j]);
+		}
+			printf("\n");
+		
+	}
+
+}
+int demSoNguyenToTrongHang(int n, int hang[n]) {
+    int dem = 0;
+    int i;
+    for (i = 1; i <= n; ++i) {
+        if (laSoNguyenTo(hang[i])) {
+            dem++;
+        }
+    }
+    return dem;
+}
+//Dem So nguyen to trong ma tran;
+int demSoNguyenToTrongMaTran(int n,int A[n][n]){
+	   int count=0;
+	   int i;
+		for(i=1;i<=n;i++){
+		int j;
+		for(j=1;j<=n;j++){
+			if(laSoNguyenTo(A[i][j])){
+				count++;
+			}	  
+		}		
+	}
+	return count;
+}
+
+int timHangNhieuSoNguyenToNhat(int n, int A[n][n]) {
+    int maxSoNguyenTo = -1;
+    int hangNhieuSoNguyenTo = -1;
+     int i;
+    for ( i = 1; i <= n; ++i) {
+        int soNguyenToTrongHang = demSoNguyenToTrongHang(n, A[i]);
+        if (soNguyenToTrongHang > maxSoNguyenTo) {
+            maxSoNguyenTo = soNguyenToTrongHang;
+            hangNhieuSoNguyenTo = i;
+        }
+    }
+
+    return hangNhieuSoNguyenTo;
+}
+
+int main() {
+    int n;
+
+    do {
+        printf("Nhap kich thuoc ma tran vuong n (1 < n < 30): ");
+        scanf("%d", &n);
+    } while (n <= 1 || n >= 30);
+
+    int A[n][n];
+
+    nhapMaTran(n, A);
+    inMaTran(n,A);
+    int soNguyenTotrongMaTran=demSoNguyenToTrongMaTran(n,A);
+    printf("So cac so nguyen to trong Ma Tran:%d\n",soNguyenTotrongMaTran);
+
+    int hangNhieuSoNguyenTo = timHangNhieuSoNguyenToNhat(n, A);
+
+    printf("Hang co nhieu so nguyen to nhat la hang %d.\n", hangNhieuSoNguyenTo);
+
+    return 0;
+}
+
+Câu 3:Dem so luong tu trong chuoi ky tu
+#include<stdio.h>
+#include<string.h>
+#include <stdbool.h>
+//Dem so tu trong xau
+int demSoTu(char str[]){
+	int count=0;
+	int len=strlen(str);
+	if(len==0){
+		return 0;
+	}
+	if(str[0]!=' '){
+		count ++;
+	}
+	//
+	int i;
+	for(i=1;i<len;i++){
+		if(str[i]!=' '&&str[i-1]==' '){
+			count++;	
+		}
+	}
+	return count;
+}
+
+
+int main() {
+    int testCases; 
+    printf("Nhap so luong bo test:");
+    scanf("%d", &testCases);
+
+    while (testCases--) {
+        char inputString[201]; 
+
+        do {
+            printf("Nhap chuoi khong qua 200 ky tu: ");
+            scanf(" %[^\n]s", inputString); 
+        } while (strlen(inputString) > 200); 
+
+        int result = demSoTu(inputString);
+
+        printf("So luong tu trong chuoi ky tu: %d\n", result);
+    }
+
+    return 0;
+}
+Câu 4: Tìm số kí tự, số chữ số, số ký tự đặc biệt trong chuỗi vừa nhập
+#include <stdio.h>
+#include <ctype.h>
+
+void demKyTu(char* xau) {
+    int chucai = 0, chuso = 0, kyTuKhac = 0;
+    int i;
+
+    for (i = 0; xau[i] != '\0'; ++i) {
+        if (isalpha(xau[i])) {
+            chucai++;
+        } else if (isdigit(xau[i])) {
+            chuso++;
+        } else if (!isspace(xau[i])) {
+            kyTuKhac++;
+        }
+    }
+
+    printf("So chu cai: %d\n", chucai);
+    printf("So chu so: %d\n", chuso);
+    printf("So ky tu khac: %d\n", kyTuKhac);
+}
+
+int main() {
+    char xau[100];
+
+    printf("Nhap vao mot xau ky tu: ");
+    fgets(xau, sizeof(xau), stdin);
+    int i;
+
+    for (i = 0; xau[i] != '\0'; ++i) {
+        if (xau[i] == '\n') {
+            xau[i] = '\0';
+            break;
+        }
+    }
+
+    demKyTu(xau);
+
+    return 0;
+}
+Câu 5: Đếm số từ trong một chuỗi vừa nhập
+#include<stdio.h>
+#include<string.h>
+
+int countWords(char str[]){
+	int count=0;
+	int isWord=0;
+	int i;
+	for(i=0;i<strlen(str);i++){
+		if(str[i]==' '||str[i]=='\n'){
+			isWord=0;
+		}
+		else if(isWord==0){
+			isWord=1;
+			count++;
+		}
+	}
+	return count;
+}
+int main(){
+	int test;
+	printf("Nhap so bo test: ");
+	scanf("%d",&test);
+	while(test--){
+		char str[200];
+		printf("Nhap vao chuoi cua ban: ");
+		scanf(" %200[^\n]s",str);
+		int result=countWords(str);
+		printf("So tu trong chuoi ban vua nhap la:%d\n",result);
+	}
+	
+	return 0;
+}
+Câu 6: Standard tên theo chuẩn chữ hoa và kí tứ đầu dòng
+#include<stdio.h>
+#include<string.h>
+#include<ctype.h>
+
+void standardName(char str[]){
+	int length = strlen(str);
+	int i;
+	for(i=0;i<length;i++){
+		if(i==0||(i>0 && str[i-1]==' ')){
+			str[i]=toupper(str[i]);
+		}
+		else{
+			str[i]=tolower(str[i]);
+		}
+	}
+}
+int main(){
+	int t;
+	printf("Nhap so bo test: ");
+	scanf("%d",&t);
+	while(t--){
+		char str[200];
+		do{  
+		    printf("Nhap vao chuoi cua ban: ");
+			scanf(" %[^\n]s",str);
+			if(strlen(str)>200){
+				printf("Ban da nhap sai xin moi nhap lai !");
+			}
+		}while(strlen(str)>200);
+		standardName(str);
+		printf(" %s\n",str);
+	}
+	return 0;
+}
+Cau 7:1.Tổng chữ số: Viết chương trình nhập vào một số n không quá 10 mũ 9, thực hiện tìm tổng các chữ số của n và in ra màn hình.
+#include <stdio.h>
+#include <math.h>
+int totalSumofNumber(int n) {
+    int sum = 0;
+    while (n > 0) {
+        int temp = n % 10;
+        sum += temp;
+        n = n / 10;
+    }
+    return sum;
+}
+
+int main() {
+    int n;
+    do {
+        printf("Nhap so nguyen duong khong qua 10 mu 9: ");
+        scanf("%d", &n);
+        if (n >=(int)pow(10,9)) {
+            printf("Ban da nhap sai vui long nhap lai !\n");
+        }
+    } while (n >=(int)pow(10,9));
+
+    int result = totalSumofNumber(n);
+    printf("Tong cac chu so cua %d la: %d\n", n, result);
+    return 0;
+}
+Câu 8.Đếm số chữ số: Cho số nguyên dương N không quá 9 chữ số.
+#include<stdio.h>
+#include<math.h>
+
+int demSoNguyenDuong(int n){
+	int count=0;
+	while(n>0){
+		n=n/10;
+		count++;
+	}
+	return count;
+}
+int main(){
+	 int n;
+	 do{
+	 	printf("Nhap vao mot so nguyen to: ");
+	 	scanf("%d",&n);
+	 	if(n>=(int)pow(10,9)){
+	 	   printf("Ban da nhap sai vui long nhap lai !\n");
+		 }
+	 }while(n>=(int)pow(10,9));
+	 int result=demSoNguyenDuong(n);
+	 printf("So nguyen duong %d co tong cong chu so:%d\n",n,result);
+
+	return 0;
+}
+Câu 9:Số chẵn trong dãy: Viết chương trình in ra các số chẵn trong một dãy số cho trước.
+Input: Dòng đầu ghi số bộ test. Mỗi test gồm 2 dòng, dòng đầu ghi số N là số phần tử của dãy. Dòng sau ghi N số của dãy. N không quá 100, các số trong dãy đều nguyên dương và không quá 1000.
+Output: Với mỗi bộ test ghi trên một dòng lần lượt là các số chẵn của dãy số ban đầu, theo thứ tự xuất hiện.
+
+#include<stdio.h>
+
+void nhapMang(int n,int A[]){
+	int i;
+	for(i=0;i<n;i++){
+		printf("Nhap phan tu %d: ",i+1);
+		scanf("%d",&A[i]);
+	}
+}
+void inPhanTuSoChan(int n, int A[]){
+	printf("So phan tu chan trong mang A:");d
+	int i;
+	for(i=0;i<n;i++){
+		if(A[i]%2==0){
+			printf("%d\t",A[i]);
+		}
+	}
+	printf("\n");
+}
+int main(){
+	int T;
+	printf("Nhap so bo test: ");
+	scanf("%d",&T);
+	while(T--){
+		int n;
+		printf("Nhap so phan tu cua mang: ");
+		scanf("%d",&n);
+		int A[n];
+		nhapMang(n,A);
+		inPhanTuSoChan(n,A);
+	}
+}
+Câu 10: Tìm số lớn nhất trong mảng
+#include<stdio.h>
+
+void nhapMang(int n,int A[]){
+	int i;
+	for(i=0;i<n;i++){
+		do{
+			printf("Nhap phan tu nho hon 2000 !\n");
+			printf("Phan tu %d:",i+1);
+	     	scanf("%d",&A[i]);
+	     	if(A[i]>2000){
+	     		printf("Xin moi nhap phan tu nho hon 2000 ! \n");
+			 }
+			
+		}while(A[i]>2000);
+		
+	
+	}
+}
+
+int soLonNhatTrongMang(int n,int A[]){
+	int maxNumber=A[0];
+	int i;
+	for(i=0;i<n;i++){
+		if(A[i]>maxNumber){
+			maxNumber=A[i];
+		}
+	}
+	return maxNumber;
+}
+
+int main(){
+	
+	int test;
+	printf("Nhap so bo test: ");
+	scanf("%d",&test);
+	while(test--){
+		int n;
+			do{
+		printf("Nhap so luong phan tu trong mang: ");
+		scanf("%d",&n);
+		if(n>100){
+			printf("Ban da nhap sai vui long nhap lai ! \n");
+		}
+		else{
+		int A[n];
+		nhapMang(n,A);
+		int result=soLonNhatTrongMang(n,A);
+		printf("So lon nhat trong mang: %d\n",result);	
+		}
+	
+	}while(n>100);
+		
+	}
+
+	return 0;
+}
+Câu 11: Sắp xếp phần tử theo thứ tự tăng dần
+#include <stdio.h>
+
+void swap(int *a, int *b) {
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+void Nhap_Mang(int A[], int n) {
+    int i;
+    for (i = 0; i < n; i++) {
+        printf("Nhap phan tu thu %d: ", i + 1);
+        scanf("%d", &A[i]);
+    }
+}
+
+void bubbleSort(int A[], int n) {
+    int i, j;
+    for (i = 0; i < n - 1; i++) {
+        for (j = n - 1; j > i; j--) {
+            if (A[j] < A[j - 1]) {
+                swap(&A[j], &A[j - 1]);
+            }
+        }
+    }
+}
+
+void In_Mang(int A[], int n) {
+    int i;
+    for (i = 0; i < n; i++) {
+        printf("%d \t", A[i]);
+    }
+}
+
+
+int main() {
+     int n;
+        do {
+            printf("\nNhap so luong phan tu cua mang (1 <= n <= 100): ");
+            scanf("%d", &n);
+            if (n < 1 || n > 100) {
+                printf("Ban da nhap sai vui long nhap lai !");
+            }
+        } while (n > 100);
+        
+        int A[n];
+        Nhap_Mang(A, n);
+
+        printf("Mang truoc khi sap xep: ");
+        In_Mang(A, n);
+
+        printf("\nMang sau khi sap xep tang dan: ");
+        bubbleSort(A, n);
+        In_Mang(A, n);
+    return 0;
+}
+Câu 12: Tính giá trị trung bình của mảng
+#include <stdio.h>
+#include<math.h>
+void Nhap_Mang(double A[], int n) {
+    int i;
+    for (i = 0; i < n; i++) {
+        printf("Nhap phan tu thu %d: ", i + 1);
+        scanf("%lf", &A[i]);
+    }
+}
+double  averageArray(int n,double A[]){
+	double tong=0;
+	int i;
+	for(i=0;i<n;i++){
+		tong+=A[i];
+	}
+	double average=tong/n;
+	
+	return average;	
+}
+ 
+int main(){
+	int n;
+	printf("Nhap so phan tu cua mang: ");
+	scanf("%d",&n);
+	double A[n];
+	Nhap_Mang(A,n);
+	double result=averageArray(n,A);
+	printf("Gia tri trung binh cua mang:%.3lf",result);
+	
+}
+Câu 13:Mảng đối xứng: Nhập một dãy số nguyên có n phần tử (n không quá 100, các phần tử trong dãy không quá 109). Hãy viết chương trình kiểm tra xem dãy có phải đối xứng hay không. Nếu đúng in ra YES, nếu sai in ra NO.
+#include<stdio.h>
+#include<stdbool.h>
+#include <math.h>
+void nhapMang(int n, int A[]) {
+    int i;
+    for (i = 0; i < n; i++) {
+        do {
+            printf("Nhap phan tu %d: ", i + 1);
+            scanf("%d", &A[i]);
+
+            if (A[i] > (int)pow(10, 9)) {
+                printf("So ban nhap lon hon 10 mu 9, xin moi nhap lai!\n");
+            }
+        } while (A[i] > (int)pow(10, 9));
+    }
+}
+void In_Mang( int n,int A[]) {
+	printf("Day so da nhap la:");
+    int i;
+    for (i = 0; i < n; i++) {
+        printf("%d \t", A[i]);
+    }
+}
+bool kiemtraMangDoiXung(int n,int A[]){
+	int startIndex=0;
+	int endIndexx=n-1;
+	while(startIndex<endIndexx){
+		if(A[startIndex]!=A[endIndexx]){
+			return false;
+		}
+		startIndex++;
+		endIndexx--;
+	}
+}
+int main(){
+	int test;
+	printf("Nhap so bo test muon thuc hien: ");
+	scanf("%d",&test);
+	while(test--){
+			int n;
+	do{
+		printf("Nhap so phan tu cua day khong qua 100 phan tu : ");
+		scanf("%d",&n);
+		if(n>100){
+			printf("Ban da nhap qua 100 phan tu, xin moi nhap lai !\n");
+		}
+	}while(n>100);
+	int A[n];
+	nhapMang(n,A);
+	In_Mang(n,A);
+	//Kiem tra mang co doi xung va in ra ket qua
+	if(kiemtraMangDoiXung(n,A)){
+		printf("\nYES\n");
+	}else{
+		printf("\nNO\n");
+	}		
+	}	
+	return 0;
+}
+Câu 14:Đảo ngược mảng số: Viết chương trình nhập vào mảng A gồm n phần tử (1 < n < 100). Thực hiện đảo ngược mảng và in ra kết quả.
+#include <stdio.h>
+#include <stdlib.h>
+void nhapMang(int n, int A[]) {
+    int i;
+    for (i = 0; i < n; i++) {
+        do {
+            printf("Nhap phan tu %d: ", i + 1);
+            scanf("%d", &A[i]);
+
+            if (A[i] > 1000) {
+                printf("So ban nhap lon hon 1000, xin moi nhap lai!\n");
+            }
+        } while (A[i] > 1000);
+    }
+}
+void DaoNguocMang(int start,int end,int A[]){
+	while(start<end){
+		int temp=A[start];
+		A[start]=A[end];
+		A[end]=temp;
+		start++;
+		end--;
+	}
+}
+void InMangDaoNguoc(int n,int A[]){
+	printf("\n\nMang Dao nguo:\n");
+	int i;
+    for(i = 0; i < n; i++){
+        printf("%d \t",A[i]);
+    }
+}
+
+int main(){	
+int n;
+do {
+	printf("Nhap so phan tu cua mang voi 1 < n < 100 :");
+	scanf("%d",&n);
+	if(n<1||n>100){
+		printf("Vui long nhap so phan tu trong 1 < n < 100 ! \n");
+	}
+	
+}while(n<1||n>100);
+int start=0;
+int end=n-1;
+int A[n];
+nhapMang(n,A);
+DaoNguocMang(start,end,A);
+InMangDaoNguoc(n,A);
+
+ return 0;
+}
+
+Câu 15:Quản lý sinh viên: Thông tin về sinh viên gồm có:
+1. mã sinh viên là số nguyên tự động tăng;
+2. tên sinh viên;
+3. điểm sinh viên là số thực gồm điểm môn A, môn B, môn C.
+ Viết chương trình thực hiện 3 chức năng:
+1. thêm mới
+2. cập nhật điểm theo mã sinh viên
+3. hiển thị danh sách sinh viên theo tổng điểm tăng dần
+#include <stdio.h>
+#include <stdlib.h>
+
+struct SinhVien {
+    int ma_sv;
+    char ten_sv[50];
+    float diem_A;
+    float diem_B;
+    float diem_C;
+};
+
+void themMoiSinhVien(struct SinhVien *danhSachSV, int *soLuongSV);
+void capNhatDiem(struct SinhVien *danhSachSV, int soLuongSV);
+void hienThiDanhSach(struct SinhVien *danhSachSV, int soLuongSV);
+
+int main() {
+    struct SinhVien danhSachSV[100];
+    int soLuongSV = 0;
+    int luaChon;
+
+    while (1) {
+        printf("\nChuong trinh Quan ly Sinh vien\n");
+        printf("1. Them moi sinh vien\n");
+        printf("2. Cap nhat diem theo ma sinh vien\n");
+        printf("3. Hien thi danh sach sinh vien theo tong diem tang dan\n");
+        printf("4. Thoat\n");
+
+        printf("Nhap lua chon cua ban: ");
+        scanf("%d", &luaChon);
+
+        switch (luaChon) {
+            case 1:
+                themMoiSinhVien(danhSachSV, &soLuongSV);
+                break;
+            case 2:
+                capNhatDiem(danhSachSV, soLuongSV);
+                break;
+            case 3:
+                hienThiDanhSach(danhSachSV, soLuongSV);
+                break;
+            case 4:
+                printf("Ket thuc chuong trinh.\n");
+                exit(0);
+            default:
+                printf("Lua chon khong hop le. Vui long chon lai.\n");
+        }
+    }
+
+    return 0;
+}
+
+void themMoiSinhVien(struct SinhVien *danhSachSV, int *soLuongSV) {
+    printf("Nhap ten sinh vien: ");
+    scanf("%s", danhSachSV[*soLuongSV].ten_sv);
+    danhSachSV[*soLuongSV].ma_sv = *soLuongSV + 1;
+    printf("Nhap diem mon A: ");
+    scanf("%f", &danhSachSV[*soLuongSV].diem_A);
+    printf("Nhap diem mon B: ");
+    scanf("%f", &danhSachSV[*soLuongSV].diem_B);
+    printf("Nhap diem mon C: ");
+    scanf("%f", &danhSachSV[*soLuongSV].diem_C);
+
+    (*soLuongSV)++;
+    printf("Sinh vien moi da duoc them thanh cong.\n");
+}
+
+void capNhatDiem(struct SinhVien *danhSachSV, int soLuongSV) {
+    int maSV;
+    printf("Nhap ma sinh vien can cap nhat diem: ");
+    scanf("%d", &maSV);
+
+    for (int i = 0; i < soLuongSV; i++) {
+        if (danhSachSV[i].ma_sv == maSV) {
+            printf("Nhap diem mon A moi: ");
+            scanf("%f", &danhSachSV[i].diem_A);
+            printf("Nhap diem mon B moi: ");
+            scanf("%f", &danhSachSV[i].diem_B);
+            printf("Nhap diem mon C moi: ");
+            scanf("%f", &danhSachSV[i].diem_C);
+            printf("Diem cua sinh vien %s da duoc cap nhat thanh cong.\n", danhSachSV[i].ten_sv);
+            return;
+        }
+    }
+
+    printf("Khong tim thay sinh vien co ma so nay.\n");
+}
+
+void hienThiDanhSach(struct SinhVien *danhSachSV, int soLuongSV) {
+    // Sap xep danh sach sinh vien theo tong diem tang dan
+    for (int i = 0; i < soLuongSV - 1; i++) {
+        for (int j = i + 1; j < soLuongSV; j++) {
+            if (danhSachSV[i].diem_A + danhSachSV[i].diem_B + danhSachSV[i].diem_C > 
+                danhSachSV[j].diem_A + danhSachSV[j].diem_B + danhSachSV[j].diem_C) {
+                // Hoan doi vi tri
+                struct SinhVien temp = danhSachSV[i];
+                danhSachSV[i] = danhSachSV[j];
+                danhSachSV[j] = temp;
+            }
+        }
+    }
+
+    printf("Danh sach sinh vien theo tong diem tang dan:\n");
+    for (int i = 0; i < soLuongSV; i++) {
+        printf("Ma SV: %d, Ten SV: %s, Tong diem: %.2f\n", danhSachSV[i].ma_sv, danhSachSV[i].ten_sv,
+               danhSachSV[i].diem_A + danhSachSV[i].diem_B + danhSachSV[i].diem_C);
+    }
+}
+Câu 16:Sắp xếp thí sinh: Hãy sắp xếp danh sách thí sinh theo tổng điểm giảm dần.
+Mỗi thí sinh gồm các thông tin:
+•	Mã thí sinh: là một số nguyên, tự động tăng. Tính từ 1.
+•	Tên thí sinh, ngày sinh
+•	Điểm môn 1, điểm môn 2, điểm môn 3
+Input:
+Dòng đầu chứa số thí sinh. Mỗi thí sinh viết trên 3 dòng:
+•	Dòng 1: Tên thí sinh
+•	Dòng 2: Ngày sinh
+•	Dòng 3,4,5: 3 điểm thi tương ứng. Các điểm thi đều đảm bảo hợp lệ (từ 0 đến 10).
+#include <stdio.h>
+#include <stdlib.h>
+
+struct ThiSinh {
+    int ma_thi_sinh;
+    char ten[50];
+    char ngay_sinh[20];
+    float diem_mon_1;
+    float diem_mon_2;
+    float diem_mon_3;
+    float tong_diem;
+};
+
+void nhapThongTinThiSinh(struct ThiSinh *thiSinh);
+void sapXepDanhSach(struct ThiSinh *danhSach, int soLuong);
+void hienThiDanhSach(struct ThiSinh *danhSach, int soLuong);
+
+int main() {
+    int soLuongThiSinh;
+
+    printf("Nhap so luong thi sinh: ");
+    scanf("%d", &soLuongThiSinh);
+
+    struct ThiSinh danhSach[soLuongThiSinh];
+
+    // Nhập thông tin cho từng thí sinh
+    for (int i = 0; i < soLuongThiSinh; i++) {
+        printf("\nNhap thong tin cho thi sinh thu %d:\n", i + 1);
+        nhapThongTinThiSinh(&danhSach[i]);
+    }
+
+    // Tính tổng điểm và sắp xếp danh sách
+    for (int i = 0; i < soLuongThiSinh; i++) {
+        danhSach[i].ma_thi_sinh = i + 1;
+        danhSach[i].tong_diem = danhSach[i].diem_mon_1 + danhSach[i].diem_mon_2 + danhSach[i].diem_mon_3;
+    }
+
+    sapXepDanhSach(danhSach, soLuongThiSinh);
+
+    // Hiển thị danh sách sau khi sắp xếp
+    printf("\nDanh sach thi sinh sau khi sap xep theo tong diem giam dan:\n");
+    hienThiDanhSach(danhSach, soLuongThiSinh);
+
+    return 0;
+}
+
+void nhapThongTinThiSinh(struct ThiSinh *thiSinh) {
+    printf("Nhap ten thi sinh: ");
+    scanf(" %[^\n]s", thiSinh->ten);
+
+    printf("Nhap ngay sinh thi sinh: ");
+    scanf(" %[^\n]s", thiSinh->ngay_sinh);
+
+    printf("Nhap diem mon 1: ");
+    scanf("%f", &thiSinh->diem_mon_1);
+
+    printf("Nhap diem mon 2: ");
+    scanf("%f", &thiSinh->diem_mon_2);
+
+    printf("Nhap diem mon 3: ");
+    scanf("%f", &thiSinh->diem_mon_3);
+}
+
+void sapXepDanhSach(struct ThiSinh *danhSach, int soLuong) {
+    // Sắp xếp danh sách thí sinh theo tổng điểm giảm dần
+    for (int i = 0; i < soLuong - 1; i++) {
+        for (int j = i + 1; j < soLuong; j++) {
+            if (danhSach[i].tong_diem < danhSach[j].tong_diem) {
+                // Hoán đổi vị trí
+                struct ThiSinh temp = danhSach[i];
+                danhSach[i] = danhSach[j];
+                danhSach[j] = temp;
+            }
+        }
+    }
+}
+
+void hienThiDanhSach(struct ThiSinh *danhSach, int soLuong) {
+    for (int i = 0; i < soLuong; i++) {
+        printf("Ma thi sinh: %d, Ten: %s, Ngay sinh: %s, Tong diem: %.2f\n",
+               danhSach[i].ma_thi_sinh, danhSach[i].ten, danhSach[i].ngay_sinh, danhSach[i].tong_diem);
+    }
+}
+Câu 18:Sắp xếp danh sách mặt hàng: Hãy sắp xếp danh sách các mặt hàng theo lợi nhuận giảm dần. Mỗi mặt hàng gồm các thông tin: Mã mặt hàng (là một số nguyên, tự động tăng, tính từ 1); Tên mặt hàng, nhóm hàng: là các xâu ký tự; Giá mua, giá bán: là các số thực (không quá 9 chữ số)
+Input:
+Dòng đầu chứa số mặt hàng. Mỗi mặt hàng viết trên 4 dòng: Dòng 1: Tên mặt hàng. Dòng 2: Nhóm hàng. Dòng 3: Giá mua. Dòng 4: Giá bán
+#include <stdio.h>
+#include <stdlib.h>
+
+struct MatHang {
+    int ma_mat_hang;
+    char ten[50];
+    char nhom_hang[50];
+    float gia_mua;
+    float gia_ban;
+    float loi_nhuan;
+};
+
+void nhapThongTinMatHang(struct MatHang *matHang);
+void tinhLoiNhuan(struct MatHang *matHang);
+void sapXepDanhSach(struct MatHang *danhSach, int soLuong);
+void hienThiDanhSach(struct MatHang *danhSach, int soLuong);
+
+int main() {
+    int soLuongMatHang;
+
+    printf("Nhap so luong mat hang: ");
+    scanf("%d", &soLuongMatHang);
+
+    struct MatHang danhSach[soLuongMatHang];
+
+    // Nhập thông tin cho từng mặt hàng
+    for (int i = 0; i < soLuongMatHang; i++) {
+        printf("\nNhap thong tin cho mat hang thu %d:\n", i + 1);
+        nhapThongTinMatHang(&danhSach[i]);
+        tinhLoiNhuan(&danhSach[i]);
+    }
+
+    // Sắp xếp danh sách theo lợi nhuận giảm dần
+    sapXepDanhSach(danhSach, soLuongMatHang);
+
+    // Hiển thị danh sách sau khi sắp xếp
+    printf("\nDanh sach mat hang sau khi sap xep theo loi nhuan giam dan:\n");
+    hienThiDanhSach(danhSach, soLuongMatHang);
+
+    return 0;
+}
+
+void nhapThongTinMatHang(struct MatHang *matHang) {
+    printf("Nhap ten mat hang: ");
+    scanf(" %[^\n]s", matHang->ten);
+
+    printf("Nhap nhom hang: ");
+    scanf(" %[^\n]s", matHang->nhom_hang);
+
+    printf("Nhap gia mua: ");
+    scanf("%f", &matHang->gia_mua);
+
+    printf("Nhap gia ban: ");
+    scanf("%f", &matHang->gia_ban);
+}
+
+void tinhLoiNhuan(struct MatHang *matHang) {
+    matHang->loi_nhuan = matHang->gia_ban - matHang->gia_mua;
+}
+
+void sapXepDanhSach(struct MatHang *danhSach, int soLuong) {
+    // Sắp xếp danh sách theo lợi nhuận giảm dần
+    for (int i = 0; i < soLuong - 1; i++) {
+        for (int j = i + 1; j < soLuong; j++) {
+            if (danhSach[i].loi_nhuan < danhSach[j].loi_nhuan) {
+                // Hoán đổi vị trí
+                struct MatHang temp = danhSach[i];
+                danhSach[i] = danhSach[j];
+                danhSach[j] = temp;
+            }
+        }
+    }
+}
+
+void hienThiDanhSach(struct MatHang *danhSach, int soLuong) {
+    for (int i = 0; i < soLuong; i++) {
+        printf("Ma mat hang: %d, Ten: %s, Nhom hang: %s, Loi nhuan: %.2f\n",
+               i + 1, danhSach[i].ten, danhSach[i].nhom_hang, danhSach[i].loi_nhuan);
+    }
+}
+
+Câu 19: Prime Facstors. Cho số nguyên dương N. Hãy đưa ra tất cả các ước số nguyên tố của N.
+Input:
+ Dòng đầu tiên đưa vào số lượng bộ test T.
+ Những dòng kế tiếp đưa vào T bộ test. Mỗi bộ test là một số nguyên dương N được ghi trên một dòng.
+ T, N thỏa mãn ràng buộc: 1≤T≤100; 2≤N≤1010.
+#include <stdio.h>
+#include <stdbool.h>
+#include <math.h>
+
+bool is_prime(int num) {
+    if (num < 2) {
+        return false;
+    }
+    int i = 2;
+    while (i <= sqrt(num)) {
+        if (num % i == 0) {
+            return false;
+        }
+        i++;
+    }
+
+    return true;
+}
+
+void InSoNguyenTo(int N) {
+    printf("Cac so nguyen to nho hon hoac bang %d : ", N);
+    int i = 2;
+    while (i <= N) {
+        if (is_prime(i)) {
+            printf("%d ", i);
+        }
+        i++;
+    }
+    printf("\n");
+}
+
+int main() {
+    int test;
+    do{
+    	  printf("Nhap vao so bo test: ");
+          scanf("%d", &test);
+          if(test<2||test>100){
+          	printf("Ban da nhap sai, xin moi nhap lai !\n");
+		  }
+	}while(test<2||test>100);
+  
+
+    while (test--) {
+        int N;
+        do {
+            printf("Nhap vao so nguyen duong N voi 2 < N < 10000: ");
+            scanf("%d", &N);
+            if (N < 2 || N > (int)pow(10, 4)) {
+                printf("Xin moi nhap lai\n");
+            }
+        } while (N < 2 || N > N > (int)pow(10, 4));
+
+        InSoNguyenTo(N);
+    }
+
+    return 0;
+}
+
+
+
+
+
